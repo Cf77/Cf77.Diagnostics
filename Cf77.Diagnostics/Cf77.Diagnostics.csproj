@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>1.0.0.0</Version>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageTargetFallback>portable-net45+win8+wp8+wpa81</PackageTargetFallback>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <FakePackageId>Cf77.Diagnostics.FakePackageIdToBreakNugetRestoreCycle</FakePackageId>
+    <RealPackageId>Cf77.Diagnostics</RealPackageId>
+  </PropertyGroup>
+
+  <!--
+    Nuget doesn't allow installing a package into the project that creates this package.
+    In order to work around this limitation, we set PackageId to a fake value, but replace it with the real one just before the package is created.
+  -->
+  <Target Name="_UpdatePackageId" BeforeTargets="$(PackDependsOn)">
+    <PropertyGroup>
+      <PackageId>$(RealPackageId)</PackageId>
+    </PropertyGroup>
+  </Target>
+  
+  <PropertyGroup>
+    <PackageId>$(FakePackageId)</PackageId>
+    <PackageVersion>$(Version)</PackageVersion>
+    <Authors>Cf77</Authors>
+    <PackageProjectUrl>https://github.com/Cf77/Cf77.Diagnostics</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Cf77/Cf77.Diagnostics</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Cf77.Diagnostics</Description>
+    <PackageReleaseNotes>
+      v1.0.0:
+      - introducing Cf77.Diagnostics with complex-type parameter analyzer for Abp
+    </PackageReleaseNotes>
+    <Copyright>Copyright Cf77 2019</Copyright>
+    <PackageTags></PackageTags>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.6.2" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.10" PrivateAssets="all" />
+    <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+
+</Project>
