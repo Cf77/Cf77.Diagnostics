@@ -34,13 +34,6 @@ namespace Cf77.Diagnostics
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
             context.EnableConcurrentExecution();
             context.RegisterSemanticModelAction(ctx => Analyze(ctx.ReportDiagnostic, ctx.SemanticModel));
-            context.RegisterCompilationAction(ctx =>
-            {
-                foreach (var syntaxTree in ctx.Compilation.SyntaxTrees)
-                {
-                    Analyze(ctx.ReportDiagnostic, ctx.Compilation.GetSemanticModel(syntaxTree));
-                }
-            });
         }
 
         private void Analyze(Action<Diagnostic> report, SemanticModel semanticModel)
