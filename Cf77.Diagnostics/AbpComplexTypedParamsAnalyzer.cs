@@ -31,7 +31,7 @@ namespace Cf77.Diagnostics
 
         public override void Initialize(AnalysisContext context)
         {
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
             context.RegisterSemanticModelAction(ctx => Analyze(ctx.ReportDiagnostic, ctx.SemanticModel));
         }
