@@ -67,6 +67,16 @@ namespace Cf77.Diagnostics
                 var targetMethods = abpService
                     .ChildNodes()
                     .OfType<MethodDeclarationSyntax>()
+                    .Where(method =>
+                    {
+                        var methodInfo = semanticModel.GetDeclaredSymbol(method);
+                        if (methodInfo == default)
+                        {
+                            return false;
+                        }
+
+                        return methodInfo.DeclaredAccessibility == Accessibility.Public;
+                    })
                     .Select(method =>
                     (
                         method,
@@ -102,7 +112,25 @@ namespace Cf77.Diagnostics
             }
 
             bool IsComplexParameterType(ParameterSyntax syntax)
-                => !syntax.Type.IsKind(SyntaxKind.PredefinedType);
+            {
+                var typeSyntax = syntax.ChildNodes().OfType<TypeSyntax>().FirstOrDefault();
+
+                if (typeSyntax == default)
+                {
+                    return false;
+                }
+                
+                if (typeSyntax.IsKind(SyntaxKind.NullableType))
+                {
+                    typeSyntax = typeSyntax.ChildNodes().OfType<TypeSyntax>().FirstOrDefault();
+                    if (typeSyntax == default)
+                    {
+                        return false;
+                    }
+                }
+
+                return !typeSyntax.IsKind(SyntaxKind.PredefinedType);
+            }
         }
     }
 }
