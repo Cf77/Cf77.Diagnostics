@@ -9,7 +9,7 @@ namespace Cf77.Diagnostics.Test
     public class UnitTest : CodeFixVerifier
     {
         [TestMethod]
-        public void TestMethod1()
+        public void EmptyFileTest()
         {
             var test = @"";
 
@@ -17,7 +17,7 @@ namespace Cf77.Diagnostics.Test
         }
 
         [TestMethod]
-        public void TestMethod2()
+        public void TwoComplexTypesTest()
         {
             var test = @"
 namespace Abp.Application.Services
