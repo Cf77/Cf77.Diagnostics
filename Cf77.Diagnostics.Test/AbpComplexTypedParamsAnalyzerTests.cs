@@ -8,8 +8,6 @@ namespace Cf77.Diagnostics.Test
     [TestClass]
     public class UnitTest : CodeFixVerifier
     {
-
-        //No diagnostics expected to show up
         [TestMethod]
         public void TestMethod1()
         {
@@ -18,7 +16,6 @@ namespace Cf77.Diagnostics.Test
             VerifyCSharpDiagnostic(test);
         }
 
-        //Diagnostic triggered and checked for
         [TestMethod]
         public void TestMethod2()
         {
